@@ -463,6 +463,15 @@ function sort()
 	
 	for (i=0; i<81; i++)
 	{
+		if (solution[i] == "")
+		{	
+			a = (Math.floor(i/9))*9;
+			solution[i] = 45-Number(solution[a])-Number(solution[a+1])-Number(solution[a+2])-Number(solution[a+3])-Number(solution[a+4])-Number(solution[a+5])-Number(solution[a+6])-Number(solution[a+7])-Number(solution[a+8]);
+		}
+	}
+	
+	for (i=0; i<81; i++)
+	{
 		document.getElementById(names[i]).innerHTML = solution[i];
 	}
 }

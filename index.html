@@ -45,7 +45,7 @@ button
 	font-size: 20px;
 	width: 200px;
 	height: 50px;
-	background-color: gray;
+	background-color: lightgray;
 	margin-bottom: 50px;
 }
 input
@@ -60,7 +60,11 @@ input
 	font-size: 20px;
 	font-family: times new roman;
 }
-
+.disabled
+{
+	background-color: gray;
+	text-color: black;
+}
 </style>
 </head>
 
@@ -236,12 +240,11 @@ input
 	</table>
 	
 	
-	
 	<div style="position: relative; top: -606px; width: 220px; margin-left: 800px">
-		<button onclick="sort()">Start New Game</button>
-		<button onclick="sort()">Restart Current Game</button>
-		<button onclick="sort()">Check Solution</button>
-		<button onclick="visible(1, 'instructions')">How to Play</button>
+		<button type="button" onclick="sort()">Start New Game</button>
+		<button type="button" id="restartButton" onclick="restart()" disabled>Restart Current Game</button>
+		<button type="button" id="submissionButton" onclick="submit()" disabled>Check Solution</button>
+		<button type="button" onclick="visible(1, 'instructions')">How to Play</button>
 	</div>
 </div>
 
@@ -258,7 +261,7 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 <div style="position:relative; width:225px; top: 50px; left: 40px;"><p style="color:DodgerBlue;text-align:center;">Each column has only the number 1 to 9 without repeating</p></div>
 <div style="position:relative; width:225px; top: 220px; left: 350px;"><p style="color:MediumSeaGreen; text-align:center;">Each sub-grid has only the number 1 to 9 without repeating</b></p></div>
 
-<div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;"><b>X</b>
+<div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;cursor:default;"><b>X</b>
 </div>
 
 </div>
@@ -324,6 +327,9 @@ function load()
 }
 function solutionGen()
 {
+	document.getElementById("submissionButton").disabled = true;
+	document.getElementById("restartButton").disabled = true; 
+	
 	entries.sort(function(a, b){return 0.5 - Math.random()}); 
 	entries.sort(function(a, b){return 0.5 - Math.random()});
 	entries.sort(function(a, b){return 0.5 - Math.random()});
@@ -529,13 +535,50 @@ function sort()
 	
 	for(i=0; i<81; i++)
 	{
+		testArr[i] = 0;
 		if(entries[i].length == 0)
 		{
-			document.getElementById(names[i]).innerHTML = "<input type='number' id='" + names[i] + i.toString() + "' onblur='' onfocus=''>";
+			var x = '"'  + names[i] + i.toString() + '"';
+			document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ x +")' onfocus='focused("+ x +")' min='1' max='9'>";
 		}
 	}
 	
 	
+}
+function submit()
+{
+	var x = 0;
+	
+	for(i=0; i<81; i++)
+	{
+		
+		x =names[i] + i.toString();
+		
+		if(testArr[i] == 2)
+		{
+			document.getElementById(x).style.backgroundColor = "#A08080";
+		}else if(testArr[i] == 1)
+		{
+			document.getElementById(x).style.backgroundColor = "#80A080";
+		}
+	}
+
+}
+function restart()
+{
+	document.getElementById("submissionButton").disabled = true;
+	document.getElementById("restartButton").disabled = true;
+	
+	var x;
+	for(i=0; i<81; i++)
+	{
+		if (testArr[i] == "true" || testArr[i] == "false")
+		{
+			entries[i] = "";
+			x = names[i] + i.toString();
+			document.getElementById(x).value = null;
+		}
+	}
 }
 function displayedSolution()
 {
@@ -640,10 +683,50 @@ function checkSolve()
 function enter(enteredName)
 {
 	enteredName.value = enteredName.value + "ll";
-	document.getElementById("test2").value = document.getElementById("E1").offsetHeight;
+	document.getElementById("test2").value = document.getElementById("E1").style.font-size;
+}
+function blurred(dest)
+{
+	var x=document.getElementById(dest).value;
+	var y = Number(dest.slice(2,4));
+	
+	if(x<1 || x > 9)
+	{
+		document.getElementById(dest).value = null;
+	}else
+	{
+		entries[y] = x.toString();
+		if (solution[y] == entries[y])
+		{
+			testArr[y] = 1;
+		}else
+		{
+			testArr[y] = 2;
+		}
+		document.getElementById("test2").value = testArr[y];
+		document.getElementById("test").innerHTML = testArr;
+		document.getElementById("restartButton").disabled = false;
+	}
+	a = 0;
+	for(i=0; i<81; i++)
+	{
+		if(entries[i].length == 1)
+		{
+			a += 1;
+		}
+	}
+	if(a==81)
+	{
+		document.getElementById("submissionButton").disabled = false;
+	}
+}
+function focused(dest)
+{
+	
 }
 function visible(toggle, destination)
 {
+
 	if(toggle==1)
 	{
 		document.getElementById(destination).style.visibility = 'visible';

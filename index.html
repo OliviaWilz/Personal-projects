@@ -24,6 +24,7 @@ td
 	padding: 0px;
 	text-align: center;
 	width:66px;
+	height: 66px;
 	font-size: large;
 }
 .outer
@@ -53,6 +54,9 @@ input
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
+	background-color:#505050;
+	border: none;
+	text-align: center;
 }
 
 </style>
@@ -235,29 +239,33 @@ input
 		<button onclick="sort()">Start New Game</button>
 		<button onclick="sort()">Restart Current Game</button>
 		<button onclick="sort()">Check Solution</button>
-		<button onclick="sort()">How to Play</button>
+		<button onclick="visible(1, 'instructions')">How to Play</button>
 	</div>
 </div>
 
-<div id="instructions" style="width:600px; height: 700px; background-color: white; padding: 10px; position: relative; top: -700px; z-index: 5; left: 10px;">
+<div id="instructions" style="width:600px; height: 700px; background-color: white; padding: 10px; position: relative; top: -700px; z-index: 5; left: 10px; visibility: hidden;">
 <h2 style="text-align: center;">How to Play Sudoku!</h2>
 The objective of Sudoku is to fill the entire 9x9 grid with numbers while following these two rules.<br>
 <b>Rule 1:</b>Every column and row must have all digits from 1 to 9 without repeating any of them.<br>
 <b>Rule 2:</b>Every 3x3 sub-grid must contain all digits from 1 to 9 without repeating any of them.<br>
-Remember these rules must be applied throughout the entire game to have a correct solution.<br>
+Remember these rules must be applied throughout the entire game to have a correct solution.<br><br>
+To enter a number into a cell, simply select the cell and use your keyboard to enter a number. <br>
 Once you've filled in the entire grid you can press the <i>Check Solution</i> button to see if you are correct.<br>
 <img src="https://i.imgur.com/ueQcPWT.png" style="float:right;" alt="sudoku grid">
 <div style="position:relative; width:225px; top: -5px; left: 40px;"><p style="color:red;text-align:center;"><b>Each row has only the number 1 to 9 without repeating</p></div>
 <div style="position:relative; width:225px; top: 50px; left: 40px;"><p style="color:DodgerBlue;text-align:center;">Each column has only the number 1 to 9 without repeating</p></div>
 <div style="position:relative; width:225px; top: 220px; left: 350px;"><p style="color:MediumSeaGreen; text-align:center;">Each sub-grid has only the number 1 to 9 without repeating</b></p></div>
 
+<div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;"><b>X</b>
 </div>
 
-<!--
+</div>
+
+
 <table>
 	<tr>
 		<td class="test">
-			<input name="entry" type="int" id="test1" onblur="enter(test1)">
+			<input name="entry" type="number" id="test1" onblur="enter(test1)">
 		</td>
 		<td class="test">
 			<input name="entry" type="int" id="test2" onblur="enter(test2)">
@@ -272,13 +280,13 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 		</td>
 	</tr>
 </table>
--->
 
 <p id="test"></p>
 
 <script>
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var names = new Array(81);
+var testArr = new Array(81);
 var i=0;
 var j=0;
 var k = 0;
@@ -498,19 +506,38 @@ function solutionGen()
 }
 function sort()
 {
-	entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+	//entries = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+	entries = [ 1, 2, 3, 4, 5, 6, 7, 8, 9];
 	
+	load(); // to reset values correctly and load things in
 	
-	load();
+	solutionGen(); // generates initial solution
+	
+	for (i=0; i<81; i++) // converts all solution values to strings, currently a mix between strings and numbers
+	{
+		solution[i] = solution[i].toString();
+	}
+	
+	checkSolve(); // checks solution for correctness, occasionally there is an issue due to algorithm, resolves in the event of that
 
-	solutionGen();
+	entries = solution.filter(truth); 
 	
-	checkSolve();
-
+	displayedSolution(); // sends solution to be displayed, later on multiple functions for difficulty... maybe
 	
-	entries = solution.filter(truth);
 	
-	for (i=0; i<10; i++)
+	for(i=0; i<81; i++)
+	{
+		if(entries[i].length == 0)
+		{
+			document.getElementById(names[i]).innerHTML = "<input type='number' id='" + names[i] + i.toString() + "' onblur='' onfocus=''>";
+		}
+	}
+	
+	
+}
+function displayedSolution()
+{
+	for (i=0; i<12; i++)
 	{
 		a = Math.floor(Math.random()*41);
 		b = (Math.floor(a/9))*9 + 8 - (a%9);
@@ -521,18 +548,76 @@ function sort()
 		entries[b] = "";
 		entries[c] = "";
 		entries[d] = ""; // removed from matrix, four possibilities
+
+		testArr = entries.filter(truth);
+		j = checkUnique();
 		
-		checkUnique(entries);
+		i = i-j;
+		if(j==1)
+		{
+			entries[a] = solution[a];
+			entries[b] = solution[b];
+			entries[c] = solution[c];
+			entries[d] = solution[d];
+		}
 	}
-	
+
 	for (i=0; i<81; i++)
 	{
-		document.getElementById(names[i]).innerHTML = solution[i];
+		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
 	}
 }
-function checkUnique(testArr)
+function checkUnique()
 {
+	var g = 0;
+	var e = 0;
+	var f = 0;
+	var h = 0;
 	
+	for(h=0; h<20; h++)
+	{
+		for(j=0; j<81; j++)
+		{	
+			if(testArr[j].length != 1)
+			{
+				g = (Math.floor(j/9))*9;
+				e = j%9;
+				f = (27*(Math.floor(j/27)))+(3*((Math.floor(j/3))%3));
+				
+				if(testArr[j]=="")
+				{
+					testArr[j] = "123456789"; // fills testArr so they can be removed again
+				}
+				
+				for(k=0; k<9; k++) // loop removes invald entries from testArr
+				{
+					if(g+k != j && testArr[g+k].length == 1)
+					{
+						testArr[j] = testArr[j].replace(testArr[g+k], "");
+					}
+					if(e + (9*k) != j && testArr[e + (9*k)].length == 1)
+					{
+						testArr[j] = testArr[j].replace(testArr[e + (9*k)], "");
+					}
+					if((f+k+((Math.floor(k/3))*6))!= j && testArr[f+k+((Math.floor(k/3))*6)].length == 1)
+					{
+						testArr[j] = testArr[j].replace(testArr[f+k+((Math.floor(k/3))*6)], "");
+					}
+				}
+				
+			}
+		}
+	}
+
+	for(j=0; j<81; j++)
+	{
+		if(testArr[j].length != 1)
+		{
+			return 1;
+			document.getElementById("test").innerHTML = entries;
+		}
+	}
+	return 0;
 }
 function truth(value)
 {
@@ -546,7 +631,7 @@ function checkSolve()
 		b = Number(solution[i]) + Number(solution[i+9]) + Number(solution[i+18]) + Number(solution[i+27]) + Number(solution[i+36]) + Number(solution[i+45]) + Number(solution[i+54]) + Number(solution[i+63]) + Number(solution[i+72]);
 		if ( a!=45 || b !=45)
 		{
-			document.getElementById("test").innerHTML = a + "<br>" + b + "<br>" + solution;
+			sort();
 		}
 	}
 }
@@ -554,6 +639,16 @@ function enter(enteredName)
 {
 	enteredName.value = enteredName.value + "ll";
 	document.getElementById("test2").value = document.getElementById("E1").offsetHeight;
+}
+function visible(toggle, destination)
+{
+	if(toggle==1)
+	{
+		document.getElementById(destination).style.visibility = 'visible';
+	}else
+	{
+		document.getElementById(destination).style.visibility = 'hidden';
+	}
 }
 </script>
 

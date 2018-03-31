@@ -2,7 +2,6 @@
 <html>
 <head>
 <style>
-
 body
 {
 	background-color: #3c3c3c;
@@ -15,7 +14,6 @@ table
 {
 	border: 2px solid lightGray;
 	width:200px;height:200px;
-
 }
 td
 {
@@ -352,7 +350,6 @@ var cube8 = [57, 58, 59, 66, 67, 68, 75, 76, 77];
 var cube9 = [60, 61, 62, 69, 70, 71, 78, 79, 80];
 var letters=["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 var solution= new Array(81);
-
 function load()
 {
 	k = 0;
@@ -404,7 +401,6 @@ function solutionGen()
 	
 	entries.sort(function(a, b){return 0.5 - Math.random()});
 	entries.sort(function(a, b){return 0.5 - Math.random()}); // randomizes array again 
-
 	for( k=0; k<9; k++)
 	{
 		a = (Math.floor(k/3))*9; // 3 possibilities; k = 0, k = 9, k = 18
@@ -705,7 +701,6 @@ function submit()
 			document.getElementById(x).style.backgroundColor = "#80A080";
 		}
 	}
-
 }
 function restart()
 {
@@ -738,7 +733,6 @@ function displayedSolution(x)
 		entries[b] = "";
 		entries[c] = "";
 		entries[d] = ""; // removed from matrix, four possibilities
-
 		testArr = entries.filter(truth);
 		j = checkUnique();
 		
@@ -751,7 +745,6 @@ function displayedSolution(x)
 			entries[d] = solution[d];
 		}
 	}
-
 	
 }
 function byTwo(x)
@@ -763,7 +756,6 @@ function byTwo(x)
 		
 		entries[a] = "";
 		entries[b] = ""; // can remove some of these
-
 		testArr = entries.filter(truth);
 		j = checkUnique();
 		
@@ -782,7 +774,6 @@ function byOne(x)
 		a = Math.floor(Math.random()*81); // write function to remove only two values at once
 		
 		entries[a] = "";
-
 		testArr = entries.filter(truth);
 		j = checkUnique();
 		
@@ -834,7 +825,6 @@ function checkUnique()
 			}
 		}
 	}
-
 	for(j=0; j<81; j++)
 	{
 		if(testArr[j].length != 1)
@@ -904,7 +894,6 @@ function changed(dest)
 }
 function visible(toggle, destination)
 {
-
 	if(toggle==1)
 	{
 		document.getElementById(destination).style.visibility = 'visible';
@@ -927,8 +916,8 @@ function loadedPage()
 	
 	if(y>x)
 	{
-		document.getElementById('mostOutsideBox').style.width = a;
-		document.getElementById('mostMostOutsideBox').style.width = a;
+		document.getElementById('mostOutsideBox').style.width = "100%";
+		document.getElementById('mostMostOutsideBox').style.width = "100%";
 		a = (x-50)+400;
 		a = a + "px";
 		document.getElementById('mostMostOutsideBox').style.height = a;
@@ -947,8 +936,8 @@ function loadedPage()
 		document.getElementById('buttonBox').style.width = "100%";
 		document.getElementById('buttonBox').style.top = "-175px";
 		document.getElementById('buttonBox').style.margin = "auto";
-		a = x/4 - 20;
-		b = Math.floor(a/15);
+		a = x/4 - 15;
+		b = Math.floor(a/10);
 		a= a + "px";
 		b = b + "px";
 		$('button').css('width', a);

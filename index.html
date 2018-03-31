@@ -916,8 +916,8 @@ function loadedPage()
 	
 	if(y>x)
 	{
-		document.getElementById('mostOutsideBox').style.width = "100%";
-		document.getElementById('mostMostOutsideBox').style.width = "100%";
+		document.getElementById('mostOutsideBox').style.width = x + "px";
+		document.getElementById('mostMostOutsideBox').style.width = x + "px";
 		a = (x-50)+400;
 		a = a + "px";
 		document.getElementById('mostMostOutsideBox').style.height = a;
@@ -933,18 +933,18 @@ function loadedPage()
 		document.getElementById('case').style.margin = "auto";
 		document.getElementById('case').style.width = x-50 + "px";
 		document.getElementById('case').style.height = x-50 + "px";
-		document.getElementById('buttonBox').style.width = "100%";
+		document.getElementById('buttonBox').style.width = x + "px";
 		document.getElementById('buttonBox').style.top = "-175px";
 		document.getElementById('buttonBox').style.margin = "auto";
 		a = x/4 - 15;
-		b = Math.floor(a/10);
+		b = Math.floor(a/15);
 		a= a + "px";
 		b = b + "px";
 		$('button').css('width', a);
 		$('button').css('font-size', b);
 		document.getElementById('dropdiv').style.width = a;
 		document.getElementById('dropdiv').style.fontSize = b;
-		document.getElementById('dropdiv').style.marginLeft = "5px";
+		//document.getElementById('dropdiv').style.marginLeft = "5px";
 	}
 }
 </script>

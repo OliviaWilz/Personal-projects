@@ -6,7 +6,6 @@
 body
 {
 	background-color: #3c3c3c;
-	overflow: hidden;
 }
 table, td
 {
@@ -614,7 +613,7 @@ function sort(x)
 	
 	displayedSolution(12); // sends solution to be displayed, later on multiple functions for difficulty
 	
-	x = 48 + (x*3);
+	x = 48 + (x*4);
 	difficulty(x);
 	
 	for(i=0; i<81; i++) // sets empty cells to be fillable
@@ -655,7 +654,7 @@ function difficulty(y)
 		displayedSolution(a);
 	}
 	
-	for(x=0; x<12; x++)
+	for(x=0; x<20; x++)
 	{
 		a = 0;
 		for(i=0; i<81; i++)

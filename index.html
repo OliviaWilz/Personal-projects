@@ -75,10 +75,10 @@ input
 	font-size: 20px;
 	font-family: times new roman;
 }
-.disabled
+button:disabled
 {
-	background-color: black;
-	text-color: black;
+	background-color: DarkGray;
+	text-color: #404040;
 }
 .dropdown
 {
@@ -107,7 +107,7 @@ input
 </style>
 </head>
 
-<body>
+<body onload="loadedPage()" style="overflow:hidden;">
 
 <h1 style="text-align:center;">MySudoku</h1>
 
@@ -286,7 +286,7 @@ input
 				<button class="dropdn" onclick="sort(1)">Easy</button>
 				<button class="dropdn" onclick="sort(2)">Normal</button>
 				<button class="dropdn" onclick="sort(3)">Difficult</button>
-				<button class="dropdn" onclick="retrieve()" disabled>Continue Saved Game</button>
+				<button class="dropdn" id="continueGame" onclick="retrieve()">Continue Saved Game</button>
 			</div>
 		</div>
 		<button type="button" id="restartButton" onclick="restart()" disabled>Restart Current Game</button>
@@ -312,28 +312,6 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 </div>
 
 </div>
-
-
-<table>
-	<tr>
-		<td class="test">
-			<input name="entry" type="number" id="test1" onblur="enter(test1)">
-		</td>
-		<td class="test">
-			<input name="entry" type="int" id="test2" onblur="enter(test2)">
-		</td>
-	</tr>
-	<tr>
-		<td class="test">
-			<input name="entry" type="int" id="test3" onblur="enter(test3)">
-		</td>
-		<td class="test">
-			<input name="entry" type="int" id="test4" onblur="enter(test4)">
-		</td>
-	</tr>
-</table>
-
-<p id="test"></p>
 
 <script>
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -561,6 +539,17 @@ function solutionGen()
 }
 function retrieve()
 {
+	/*
+	if(typeof(Storage !== "undefined")
+	{
+		var x = localStorage.getItem("solution");
+		var y = localStorage.getItem("entries");
+		var z = localStorage.getItem("testArr");
+	}
+	
+	document.getElementById("test1").value = typeof x;
+	document.getElementById("continueGame").disabled = true;
+	*/
 }
 function sort(x)
 {
@@ -577,7 +566,8 @@ function sort(x)
 	}
 	
 	checkSolve(); // checks solution for correctness, occasionally there is an issue due to algorithm, resolves in the event of that
-
+	//must now save solution
+	
 	entries = solution.filter(truth); 
 	
 	displayedSolution(12); // sends solution to be displayed, later on multiple functions for difficulty
@@ -587,6 +577,7 @@ function sort(x)
 	
 	for(i=0; i<81; i++) // sets empty cells to be fillable
 	{
+		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
 		testArr[i] = 0;
 		if(entries[i].length == 0)
 		{
@@ -595,7 +586,14 @@ function sort(x)
 		}
 	}
 	
+	document.getElementById("continueGame").disabled = true;
 	
+	if(typeof(Storage) !== "undefined")
+	{
+		localStorage.setItem("solution",solution);
+		localStorage.setItem("entries",entries);
+		localStorage.setItem("testArr",testArr);
+	}
 }
 function difficulty(y)
 {
@@ -708,10 +706,7 @@ function displayedSolution(x)
 		}
 	}
 
-	for (i=0; i<81; i++)
-	{
-		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
-	}
+	
 }
 function byTwo(x)
 {
@@ -733,11 +728,6 @@ function byTwo(x)
 			entries[b] = solution[b]; 
 		}
 	}
-
-	for (i=0; i<81; i++)
-	{
-		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
-	}
 }
 function byOne(x)
 {
@@ -755,11 +745,6 @@ function byOne(x)
 		{
 			entries[a] = solution[a];
 		}
-	}
-
-	for (i=0; i<81; i++)
-	{
-		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
 	}
 }
 function checkUnique()
@@ -829,11 +814,6 @@ function checkSolve()
 		}
 	}
 }
-function enter(enteredName)
-{
-	enteredName.value = enteredName.value + "ll";
-	document.getElementById("test2").value = document.getElementById("E1").style.font-size;
-}
 function blurred(dest)
 {
 	var x=document.getElementById(dest).value;
@@ -852,8 +832,12 @@ function blurred(dest)
 		{
 			testArr[y] = 2;
 		}
-		document.getElementById("test2").value = testArr[y];
-		document.getElementById("test").innerHTML = testArr;
+		
+		if(typeof(Storage) !== "undefined")
+		{
+			localStorage.setItem("testArr",testArr);
+			localStorage.setItem("entries",entries);
+		}
 		document.getElementById("restartButton").disabled = false;
 	}
 }
@@ -881,6 +865,15 @@ function visible(toggle, destination)
 	}else
 	{
 		document.getElementById(destination).style.visibility = 'hidden';
+	}
+}
+function loadedPage()
+{
+	var x = localStorage.getItem("solution");
+	
+	if(x == null)
+	{
+		document.getElementById("continueGame").disabled = true;
 	}
 }
 </script>

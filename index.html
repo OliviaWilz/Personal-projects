@@ -936,14 +936,19 @@ function loadedPage()
 		document.getElementById('buttonBox').style.width = x + "px";
 		document.getElementById('buttonBox').style.top = "-175px";
 		document.getElementById('buttonBox').style.margin = "auto";
-		a = x/4 - 15;
-		b = Math.floor(a/15);
+		a = x/4 - 10;
+		b = Math.floor(a/10);
+		c = b*2;
+		d = Math.floor(a/4);
 		a= a + "px";
 		b = b + "px";
+		c = c + "px";
+		d = d + "px"
 		$('button').css('width', a);
+		$('button').css('height', d);
 		$('button').css('font-size', b);
-		$('input').css('font-size', b);
-		$('td').css('font-size', b);
+		$('input').css('font-size', c);
+		$('td').css('font-size', c);
 		document.getElementById('dropdiv').style.width = a;
 		document.getElementById('dropdiv').style.fontSize = b;
 		document.getElementById('dropdiv').style.marginLeft = "25px";

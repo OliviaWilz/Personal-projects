@@ -927,8 +927,8 @@ function loadedPage()
 	
 	if(y>x)
 	{
-		document.getElementById('mostOutsideBox').style.width = "100%";
-		document.getElementById('mostMostOutsideBox').style.width = "100%";
+		document.getElementById('mostOutsideBox').style.width = a;
+		document.getElementById('mostMostOutsideBox').style.width = a;
 		a = (x-50)+400;
 		a = a + "px";
 		document.getElementById('mostMostOutsideBox').style.height = a;
@@ -947,8 +947,8 @@ function loadedPage()
 		document.getElementById('buttonBox').style.width = "100%";
 		document.getElementById('buttonBox').style.top = "-175px";
 		document.getElementById('buttonBox').style.margin = "auto";
-		a = x/4 - 15;
-		b = Math.floor(a/10);
+		a = x/4 - 20;
+		b = Math.floor(a/15);
 		a= a + "px";
 		b = b + "px";
 		$('button').css('width', a);

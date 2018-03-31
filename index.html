@@ -6,7 +6,7 @@
 body
 {
 	background-color: #3c3c3c;
-	overflow: hidden;
+	overflow:hidden;
 }
 table, td
 {
@@ -92,7 +92,6 @@ button:disabled
 {
 	display: none; 
 	position: absolute;
-	background-color: #606060;
 	padding-top: 3px;
 	width: 200px;
 	z-index: 3;
@@ -118,16 +117,18 @@ button:disabled
 	border: 3px solid red;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body onload="loadedPage()">
-
+<br>
+<br>
 <h1 style="text-align:center;">MySudoku</h1>
 
 <br>
 
-<div style="width: 900px; height: 700px; margin: auto;">
-	<table class="case" style="width:600px;height:600px;z-index:0;">
+<div id = "mostOutsideBox"style="width: 900px; height: 700px; margin: auto;">
+	<table class="case" id="case" style="width:600px;height:600px;z-index:0;">
 	<tr>
 		<td class="outer" ><table>
 			<tr>
@@ -295,9 +296,9 @@ button:disabled
 		<p id="popMessage">Are you sure you would like to clear all of your entries from the board?</p><br>
 		<button type="button" style="width:100px;height:25px;margin-right:20px;" onclick="restart()">Yes</button> <button type="button" style="width:100px;height:25px;margin-left: 20px;"onclick="visible(0, 'popup')">No</button>
 	</div>
-	<div style="position: relative; top: -826px; width: 220px; margin-left: 800px;">
+	<div id="buttonBox" style="position: relative; top: -826px; width: 220px; margin-left: 800px;">
 		<div class="dropdown">
-			<div class="dropdiv" >Start Game</div>
+			<div class="dropdiv" id="dropdiv">Start Game</div>
 			<div class="dropdown-content">
 				<button class="dropdn" onclick="sort(1)">Easy</button>
 				<button class="dropdn" onclick="sort(2)">Normal</button>
@@ -918,6 +919,23 @@ function loadedPage()
 	if(x == null)
 	{
 		document.getElementById("continueGame").disabled = true;
+	}
+	
+	x = window.innerWidth;
+	var y = window.innerHeight;
+	
+	if(y>x)
+	{
+		document.getElementById('mostOutsideBox').style.width = "600px";
+		document.getElementById('mostOutsideBox').style.height = "800px";
+		document.getElementById('case').style.margin = "auto";
+		document.getElementById('buttonBox').style.width = "1000px";
+		document.getElementById('buttonBox').style.top = "-175px";
+		document.getElementById('buttonBox').style.margin = "auto";
+		$('button').css('width', '148px');
+		$('button').css('font-size', '14px');
+		document.getElementById('dropdiv').style.width = "148px";
+		document.getElementById('dropdiv').style.fontSize = "14px";
 	}
 }
 </script>

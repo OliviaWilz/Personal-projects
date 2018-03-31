@@ -37,16 +37,31 @@ td
 	border:3px solid lightGray;
 	margin-left: 150px;
 }
-button
+button 
 {
-	border-radius:1px;
-	border-color: gray;
+	border: none;
 	font-family: Candara;
 	font-size: 20px;
 	width: 200px;
 	height: 50px;
 	background-color: lightgray;
 	margin-bottom: 50px;
+}
+.dropdiv
+{
+	border-radius:1px;
+	border-color: gray;
+	font-family: Candara;
+	font-size: 20px;
+	width: 200px;
+	height: 20px;
+	background-color: lightgray;
+	text-align: center;
+	padding: 15px 0px 15px 0px;
+}
+button:hover
+{
+	background-color: Gray;
 }
 input
 {
@@ -62,8 +77,32 @@ input
 }
 .disabled
 {
-	background-color: gray;
+	background-color: black;
 	text-color: black;
+}
+.dropdown
+{
+	position: relative;
+	display: inline-block;
+	height: 50px;
+	margin-bottom: 50px;
+}
+.dropdown-content
+{
+	display: none; 
+	position: absolute;
+	background-color: #606060;
+	padding-top: 3px;
+	width: 200px;
+	z-index: 5;
+}
+.dropdown:hover .dropdown-content 
+{
+	display: block;
+}
+.dropdn
+{
+	margin-bottom: 0px;
 }
 </style>
 </head>
@@ -241,7 +280,15 @@ input
 	
 	
 	<div style="position: relative; top: -606px; width: 220px; margin-left: 800px">
-		<button type="button" onclick="sort()">Start New Game</button>
+		<div class="dropdown">
+			<div class="dropdiv" >Start Game</div>
+			<div class="dropdown-content">
+				<button class="dropdn" onclick="sort(1)">Easy</button>
+				<button class="dropdn" onclick="sort(2)">Normal</button>
+				<button class="dropdn" onclick="sort(3)">Difficult</button>
+				<button class="dropdn" onclick="retrieve()" disabled>Continue Saved Game</button>
+			</div>
+		</div>
 		<button type="button" id="restartButton" onclick="restart()" disabled>Restart Current Game</button>
 		<button type="button" id="submissionButton" onclick="submit()" disabled>Check Solution</button>
 		<button type="button" onclick="visible(1, 'instructions')">How to Play</button>
@@ -512,7 +559,10 @@ function solutionGen()
 		}
 	}
 }
-function sort()
+function retrieve()
+{
+}
+function sort(x)
 {
 	//entries = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 	entries = [ 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -530,20 +580,71 @@ function sort()
 
 	entries = solution.filter(truth); 
 	
-	displayedSolution(); // sends solution to be displayed, later on multiple functions for difficulty... maybe
+	displayedSolution(12); // sends solution to be displayed, later on multiple functions for difficulty
 	
+	x = 48 + (x*3);
+	difficulty(x);
 	
-	for(i=0; i<81; i++)
+	for(i=0; i<81; i++) // sets empty cells to be fillable
 	{
 		testArr[i] = 0;
 		if(entries[i].length == 0)
 		{
 			var x = '"'  + names[i] + i.toString() + '"';
-			document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ x +")' onfocus='focused("+ x +")' min='1' max='9'>";
+			document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ x +")' oninput='changed("+ x +")' min='1' max='9'>";
 		}
 	}
 	
 	
+}
+function difficulty(y)
+{
+	var x;
+	for(x = 0; x<12; x++)
+	{
+		a = 0;
+		for(i=0; i<81; i++)
+		{
+			if(entries[i].length == 0)
+			{
+				a = a + 1;
+			}
+		}
+		a = y - a;
+		a = Math.floor(a/8);
+		displayedSolution(a);
+	}
+	
+	for(x=0; x<12; x++)
+	{
+		a = 0;
+		for(i=0; i<81; i++)
+		{
+			if(entries[i].length == 0)
+			{
+				a +=1;
+			}
+		}
+		a = y-a;
+		a = Math.floor(a/2);
+		byTwo(a);
+	}
+	
+	for(x=0; x<20; x++)
+	{
+		a = 0;
+		for(i=0; i<81; i++)
+		{
+			if(entries[i].length == 0)
+			{
+				a +=1;
+			}
+		}
+		if(a<y-2)
+		{
+			byOne(y-a);
+		}
+	}
 }
 function submit()
 {
@@ -580,9 +681,9 @@ function restart()
 		}
 	}
 }
-function displayedSolution()
+function displayedSolution(x)
 {
-	for (i=0; i<12; i++)
+	for (i=0; i<x; i++)
 	{
 		a = Math.floor(Math.random()*41);
 		b = (Math.floor(a/9))*9 + 8 - (a%9);
@@ -604,6 +705,55 @@ function displayedSolution()
 			entries[b] = solution[b];
 			entries[c] = solution[c];
 			entries[d] = solution[d];
+		}
+	}
+
+	for (i=0; i<81; i++)
+	{
+		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
+	}
+}
+function byTwo(x)
+{
+	for (i=0; i<x; i++)
+	{
+		a = Math.floor(Math.random()*81); // write function to remove only two values at once
+		b = 81 - a; // choose whether to reflect horizontally or vertically
+		
+		entries[a] = "";
+		entries[b] = ""; // can remove some of these
+
+		testArr = entries.filter(truth);
+		j = checkUnique();
+		
+		i = i-j;
+		if(j==1)
+		{
+			entries[a] = solution[a];
+			entries[b] = solution[b]; 
+		}
+	}
+
+	for (i=0; i<81; i++)
+	{
+		document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
+	}
+}
+function byOne(x)
+{
+	for (i=0; i<x; i++)
+	{
+		a = Math.floor(Math.random()*81); // write function to remove only two values at once
+		
+		entries[a] = "";
+
+		testArr = entries.filter(truth);
+		j = checkUnique();
+		
+		i = i-j;
+		if(j==1)
+		{
+			entries[a] = solution[a];
 		}
 	}
 
@@ -659,7 +809,6 @@ function checkUnique()
 		if(testArr[j].length != 1)
 		{
 			return 1;
-			document.getElementById("test").innerHTML = entries;
 		}
 	}
 	return 0;
@@ -707,6 +856,9 @@ function blurred(dest)
 		document.getElementById("test").innerHTML = testArr;
 		document.getElementById("restartButton").disabled = false;
 	}
+}
+function changed(dest)
+{
 	a = 0;
 	for(i=0; i<81; i++)
 	{
@@ -715,14 +867,10 @@ function blurred(dest)
 			a += 1;
 		}
 	}
-	if(a==81)
+	if(a>80)
 	{
 		document.getElementById("submissionButton").disabled = false;
 	}
-}
-function focused(dest)
-{
-	
 }
 function visible(toggle, destination)
 {

@@ -6,7 +6,6 @@
 body
 {
 	background-color: #3c3c3c;
-	overflow: hidden;
 }
 table, td
 {
@@ -287,7 +286,7 @@ button:disabled
 				<button class="dropdn" onclick="sort(1)">Easy</button>
 				<button class="dropdn" onclick="sort(2)">Normal</button>
 				<button class="dropdn" onclick="sort(3)">Difficult</button>
-				<button class="dropdn" id="continueGame" onclick="retrieve()">Continue Saved Game</button>
+				<button class="dropdn" id="continueGame" onclick="retrieveGame()">Continue Saved Game</button>
 			</div>
 		</div>
 		<button type="button" id="restartButton" onclick="restart()" disabled>Restart Current Game</button>
@@ -311,9 +310,8 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 
 <div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;cursor:default;"><b>X</b>
 </div>
-
 </div>
-
+<p style="position:relative;" id="test"></p>
 <script>
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var names = new Array(81);
@@ -538,19 +536,44 @@ function solutionGen()
 		}
 	}
 }
-function retrieve()
+function retrieveGame()
 {
-	/*
-	if(typeof(Storage !== "undefined")
+	if(typeof(Storage) !== "undefined")
 	{
+		load();
 		var x = localStorage.getItem("solution");
 		var y = localStorage.getItem("entries");
 		var z = localStorage.getItem("testArr");
+		
+		x = x.split(",");
+		y = y.split(",");
+		z = z.split(",");
+		
+		solution = x.filter(truth);
+		entries = y.filter(truth);
+		testArr = z.filter(truth);
+		
+		i = 0;
+		for(i=0; i<81; i++) // sets empty cells to be fillable
+		{
+			if(entries[i].length == 0)
+			{
+				a = '"'  + names[i] + i.toString() + '"';
+				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +")' oninput='changed("+ a +")' min='1' max='9'>";
+			}else if (testArr[i] != "0")
+			{
+				a = '"'  + names[i] + i.toString() + '"';
+				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +")' oninput='changed("+ a +")' min='1' max='9'>";
+				b = names[i] + i.toString();
+				document.getElementById(b).value = entries[i];
+			}else
+			{
+				document.getElementById(names[i]).innerHTML = "<b>" + entries[i] + "</b>";
+			}
+			
+		}
+		document.getElementById("continueGame").disabled = true;
 	}
-	
-	document.getElementById("test1").value = typeof x;
-	document.getElementById("continueGame").disabled = true;
-	*/
 }
 function sort(x)
 {

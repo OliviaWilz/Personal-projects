@@ -122,7 +122,7 @@ button:disabled
 <body onload="loadedPage()">
 <br>
 <br>
-<div style="overflow:hidden;height:800px;width:1150px;margin: auto;">
+<div id="mostMostOutsideBox"style="overflow:hidden;height:750px;width:1100px;margin: auto;">
 <h1 style="text-align:center;">MySudoku</h1>
 
 <br>
@@ -328,8 +328,8 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 <div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;cursor:default;"><b>X</b>
 </div>
 </div>
+<p style="position:relative;" id="test"></p>
 </div>
-<!--<p style="position:relative;" id="test"></p>-->
 <script>
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var names = new Array(81);
@@ -927,16 +927,35 @@ function loadedPage()
 	
 	if(y>x)
 	{
-		document.getElementById('mostOutsideBox').style.width = "600px";
-		document.getElementById('mostOutsideBox').style.height = "800px";
+		document.getElementById('mostOutsideBox').style.width = "100%";
+		document.getElementById('mostMostOutsideBox').style.width = "100%";
+		a = (x-50)+400;
+		a = a + "px";
+		document.getElementById('mostMostOutsideBox').style.height = a;
+		//document.getElementById('mostOutsideBox').style.height = "100%";
+		a = (x-50)/3;
+		a = a + "px";
+		b = (x-50)/9;
+		b = b + "px";
+		$('td').css('width', b);
+		$('td').css('height', b);
+		$('table').css('width', a);
+		$('table').css('height', a);
 		document.getElementById('case').style.margin = "auto";
-		document.getElementById('buttonBox').style.width = "1000px";
+		document.getElementById('case').style.width = x-50 + "px";
+		document.getElementById('case').style.height = x-50 + "px";
+		document.getElementById('buttonBox').style.width = "100%";
 		document.getElementById('buttonBox').style.top = "-175px";
 		document.getElementById('buttonBox').style.margin = "auto";
-		$('button').css('width', '148px');
-		$('button').css('font-size', '14px');
-		document.getElementById('dropdiv').style.width = "148px";
-		document.getElementById('dropdiv').style.fontSize = "14px";
+		a = x/4 - 15;
+		b = Math.floor(a/10);
+		a= a + "px";
+		b = b + "px";
+		$('button').css('width', a);
+		$('button').css('font-size', b);
+		document.getElementById('dropdiv').style.width = a;
+		document.getElementById('dropdiv').style.fontSize = b;
+		document.getElementById('dropdiv').style.marginLeft = "5px";
 	}
 }
 </script>

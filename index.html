@@ -121,7 +121,7 @@ button:disabled
 <br>
 <br>
 <div id="mostMostOutsideBox"style="overflow:hidden;height:750px;width:1100px;margin: auto;">
-<h1 style="text-align:center;">MySudoku</h1>
+<h1 id="headofDaPage" style="text-align:center;">MySudoku</h1>
 
 <br>
 
@@ -950,8 +950,10 @@ function loadedPage()
 		$('input').css('font-size', c);
 		$('td').css('font-size', c);
 		document.getElementById('dropdiv').style.width = a;
+		document.getElementById('dropdiv').style.height = d;
 		document.getElementById('dropdiv').style.fontSize = b;
 		document.getElementById('dropdiv').style.marginLeft = "25px";
+		document.getElementById('headofDaPage').style.fontSize = c;
 	}
 }
 </script>

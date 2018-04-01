@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>MySudoku</title>
+	<link rel="icon" href="https://i.imgur.com/S3XpaYy.png">
 <style>
 body
 {
-	background-color: #3c3c3c;
+	background-image: url("https://i.imgur.com/uUX0n5h.jpg");
+	background-attachment: fixed;
 }
 table, td
 {
@@ -17,8 +20,8 @@ table
 }
 td
 {
-	border: 1px solid black;
-	background-color: Gray;
+	color: lightGray;
+	border: 1px solid Gray;
 	padding: 0px;
 	text-align: center;
 	width:66px;
@@ -61,15 +64,20 @@ button:hover
 }
 input
 {
+	color: lightGray;
 	height: 100%;
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
-	background-color:#606060;
+	background-color:rgba(70,70,70,0.5);
 	border: none;
 	text-align: center;
 	font-size: 20px;
 	font-family: times new roman;
+}
+input[type=number]::-webkit-inner-spin-button 
+{
+  -webkit-appearance: none;
 }
 button:disabled
 {
@@ -108,8 +116,8 @@ button:disabled
 	position: relative;
 	bottom:500px;
 	z-index: 10;
-	background-color: #404040;
-	border: 3px solid red;
+	background-color: darkGray;
+	border: 3px solid royalBlue;
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -119,7 +127,7 @@ button:disabled
 <br>
 <br>
 <div id="mostMostOutsideBox"style="overflow:hidden;height:750px;width:1100px;margin: auto;">
-<h1 id="headofDaPage" style="text-align:center;">MySudoku</h1>
+<h1 id="headofDaPage" style="text-align:center;color:lightGray;font-family: Calibri;font-size: 36px;">MySudoku</h1>
 
 <br>
 
@@ -287,7 +295,7 @@ button:disabled
 	</table>
 	
 	<div class="popup" id="popup" style="visibility:hidden;"><h2 style="text-align:center;">Caution!</h2>
-		<div onclick="visible(0, 'popup')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: black; width: 20px; height: 20px; text-align:center; border: 3px solid Red; border-radius: 20px; font-family:Candara;cursor:default; color:lightGray;">
+		<div onclick="visible(0, 'popup')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: black; width: 20px; height: 20px; text-align:center; border: 3px solid RoyalBlue; border-radius: 20px; font-family:Candara;cursor:default; color:lightGray;">
 		<b>X</b></div>
 		<p id="popMessage">Are you sure you would like to clear all of your entries from the board?</p><br>
 		<button type="button" style="width:100px;height:25px;margin-right:20px;" onclick="restart()" id="popupYes">Yes</button> <button type="button" id="popupNo" style="width:100px;height:25px;margin-left: 20px;"onclick="visible(0, 'popup')">No</button>
@@ -308,7 +316,10 @@ button:disabled
 	</div>
 </div>
 
-<div id="instructions" style="width:600px; height: 700px; background-color: white; padding: 10px; position: relative; top: -700px; z-index: 5; left: 10px; visibility: hidden;">
+
+<p style="position:relative;" id="test"></p>
+</div>
+<div id="instructions" style="font-family: Candara; width:600px; height: 700px; background-color: white; padding: 10px; position: relative; top: -700px; z-index: 5; left: 10px; visibility: hidden;">
 <h2 style="text-align: center;">How to Play Sudoku!</h2>
 The objective of Sudoku is to fill the entire 9x9 grid with numbers while following these two rules.<br>
 <b>Rule 1:</b>Every column and row must have all digits from 1 to 9 without repeating any of them.<br>
@@ -321,10 +332,8 @@ Once you've filled in the entire grid you can press the <i>Check Solution</i> bu
 <div style="position:relative; width:225px; top: 50px; left: 40px;"><p style="color:DodgerBlue;text-align:center;">Each column has only the number 1 to 9 without repeating</p></div>
 <div style="position:relative; width:225px; top: 220px; left: 350px;"><p style="color:MediumSeaGreen; text-align:center;">Each sub-grid has only the number 1 to 9 without repeating</b></p></div>
 
-<div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid grey; border-radius: 20px; font-family:Candara;cursor:default;"><b>X</b>
+<div onclick="visible(0, 'instructions')"style="position:absolute; z-index: 15; right: -10px; top: -10px; background-color: white; width: 20px; height: 20px; text-align:center; border: 3px solid royalBlue; border-radius: 20px; font-family:Candara;cursor:default;"><b>X</b>
 </div>
-</div>
-<p style="position:relative;" id="test"></p>
 </div>
 <script>
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -693,10 +702,10 @@ function submit()
 		
 		if(testArr[i] == 2)
 		{
-			document.getElementById(x).style.backgroundColor = "#A08080";
+			document.getElementById(x).style.backgroundColor = "rgba(255, 100, 100, 0.4)";
 		}else if(testArr[i] == 1)
 		{
-			document.getElementById(x).style.backgroundColor = "#80A080";
+			document.getElementById(x).style.backgroundColor = "rgba(50, 255, 150, 0.4)";
 		}
 	}
 }

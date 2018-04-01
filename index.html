@@ -52,7 +52,9 @@ button
 	width: 200px;
 	height: 20px;
 	background-color: lightgray;
-	
+	text-align: center;
+	padding: 15px 0px 15px 0px;
+	margin-bottom:50px;
 }
 button:hover
 {
@@ -947,9 +949,9 @@ function loadedPage()
 		$('input').css('font-size', c);
 		$('td').css('font-size', c);
 		document.getElementById('dropdiv').style.width = a;
-		document.getElementById('dropdiv').style.height = d;
-		//b =(Math.floor(x/16) - 4 - Math.floor(x/48))/2;
-		//document.getElementById('dropdiv').style.padding =b + " 0px " + b + " 0px";
+		document.getElementById('dropdiv').style.height = b;
+		b =(Math.floor(x/16) - 4 - Math.floor(x/48))/2;
+		document.getElementById('dropdiv').style.padding =b + " 0px " + b + " 0px";
 		document.getElementById('dropdiv').style.fontSize = b;
 		document.getElementById('dropdiv').style.marginLeft = "25px";
 		document.getElementById('headofDaPage').style.fontSize = c;

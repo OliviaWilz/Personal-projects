@@ -296,7 +296,7 @@ button:disabled
 	</div>
 	<div id="buttonBox" style="position: relative; top: -826px; width: 220px; margin-left: 800px;">
 		<div class="dropdown">
-			<div class="dropdiv" id="dropdiv">Start Game</div>
+			<div class="dropdiv" type="button" id="dropdiv">Start Game</div>
 			<div class="dropdown-content">
 				<button class="dropdn" onclick="sort(1)">Easy</button>
 				<button class="dropdn" onclick="sort(2)">Normal</button>
@@ -951,8 +951,8 @@ function loadedPage()
 		$('td').css('font-size', c);
 		document.getElementById('dropdiv').style.width = a;
 		document.getElementById('dropdiv').style.height = d;
-		b =(Math.floor(x/16) - 4 - Math.floor(x/48))/2;
-		document.getElementById('dropdiv').style.padding =b + " 0px " + b + " 0px";
+		//b =(Math.floor(x/16) - 4 - Math.floor(x/48))/2;
+		//document.getElementById('dropdiv').style.padding =b + " 0px " + b + " 0px";
 		document.getElementById('dropdiv').style.fontSize = b;
 		document.getElementById('dropdiv').style.marginLeft = "25px";
 		document.getElementById('headofDaPage').style.fontSize = c;

@@ -1,4 +1,4 @@
-/*
+
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var names = new Array(81);
 var testArr = new Array(81);
@@ -627,12 +627,12 @@ function checkUnique()
 	}
 	return 0;
 }
-*/
+
 function truth(value)
 {
 	return 1==1;
 }
-/*
+
 function checkSolve()
 {
 	for(i=0; i<9; i++) // checks solution for correctness
@@ -779,5 +779,5 @@ function loadedPage()
 		score = Number(c);
 	}
 	document.getElementById('totalScore').innerHTML = "Points: " + score;
-	*/
+}
 	

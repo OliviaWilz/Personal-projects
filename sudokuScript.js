@@ -1,4 +1,8 @@
 
+// this is the same script shown at the bottom of the source file sudoku.html
+// Some small changes were made for testing purposes to test the functionality of the code 
+// the changes include removing outputs and things unless they are integral to the purpose of the function
+
 var entries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 var names = new Array(81);
 var testArr = new Array(81);
@@ -24,7 +28,7 @@ var cube7 = [54, 55, 56, 63, 64, 65, 72, 73, 74];
 var cube8 = [57, 58, 59, 66, 67, 68, 75, 76, 77];
 var cube9 = [60, 61, 62, 69, 70, 71, 78, 79, 80];
 var letters=["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-var solution= new Array(81);
+//var solution= new Array(81);
 function load()
 {
 	k = 0;
@@ -33,11 +37,12 @@ function load()
 		for (j=0; j<entries.length; j++)
 		{
 			names[k]=letters[i] + entries[j];
-			solution[k] = 0;
+			//solution[k] = 0;
 			
 			k = k + 1;
 		}
 	}
+	return names;
 }
 function solutionGen()
 {
@@ -255,11 +260,11 @@ function retrieveGame()
 			if(entries[i].length == 0)
 			{
 				a = '"'  + names[i] + i.toString() + '"';
-				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +")' oninput='changed("+ a +")' min='1' max='9'>";
+				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +", value)' oninput='changed("+ a +")' min='1' max='9'>";
 			}else if (testArr[i] != 0)
 			{
 				a = '"'  + names[i] + i.toString() + '"';
-				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +")' oninput='changed("+ a +")' min='1' max='9'>";
+				document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ a +", value)' oninput='changed("+ a +")' min='1' max='9'>";
 				b = names[i] + i.toString();
 				document.getElementById(b).value = entries[i];
 			}else
@@ -314,7 +319,7 @@ function sort(x)
 		if(entries[i].length == 0)
 		{
 			var x = '"'  + names[i] + i.toString() + '"';
-			document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ x +")' oninput='changed("+ x +")' min='1' max='9'>";
+			document.getElementById(names[i]).innerHTML = "<input type='number' id=" + names[i] + i.toString() + " onblur='blurred("+ x +", value)' oninput='changed("+ x +")' min='1' max='9'>";
 		}
 	}
 	
@@ -577,7 +582,7 @@ function byOne(x)
 		}
 	}
 }
-function checkUnique()
+function checkUnique(testArray)
 {
 	var g = 0;
 	var e = 0;
@@ -588,30 +593,30 @@ function checkUnique()
 	{
 		for(j=0; j<81; j++)
 		{	
-			if(testArr[j].length != 1)
+			if(testArray[j].length != 1)
 			{
 				g = (Math.floor(j/9))*9;
 				e = j%9;
 				f = (27*(Math.floor(j/27)))+(3*((Math.floor(j/3))%3));
 				
-				if(testArr[j]=="")
+				if(testArray[j]=="")
 				{
-					testArr[j] = "123456789"; // fills testArr so they can be removed again
+					testArray[j] = "123456789"; // fills testArr so they can be removed again
 				}
 				
 				for(k=0; k<9; k++) // loop removes invald entries from testArr
 				{
-					if(g+k != j && testArr[g+k].length == 1)
+					if(g+k != j && testArray[g+k].length == 1)
 					{
-						testArr[j] = testArr[j].replace(testArr[g+k], "");
+						testArray[j] = testArray[j].replace(testArray[g+k], "");
 					}
-					if(e + (9*k) != j && testArr[e + (9*k)].length == 1)
+					if(e + (9*k) != j && testArray[e + (9*k)].length == 1)
 					{
-						testArr[j] = testArr[j].replace(testArr[e + (9*k)], "");
+						testArray[j] = testArray[j].replace(testArray[e + (9*k)], "");
 					}
-					if((f+k+((Math.floor(k/3))*6))!= j && testArr[f+k+((Math.floor(k/3))*6)].length == 1)
+					if((f+k+((Math.floor(k/3))*6))!= j && testArray[f+k+((Math.floor(k/3))*6)].length == 1)
 					{
-						testArr[j] = testArr[j].replace(testArr[f+k+((Math.floor(k/3))*6)], "");
+						testArray[j] = testArray[j].replace(testArray[f+k+((Math.floor(k/3))*6)], "");
 					}
 				}
 				
@@ -620,20 +625,18 @@ function checkUnique()
 	}
 	for(j=0; j<81; j++)
 	{
-		if(testArr[j].length != 1)
+		if(testArray[j].length != 1)
 		{
 			return 1;
 		}
 	}
 	return 0;
 }
-
 function truth(value)
 {
 	return 1==1;
 }
-
-function checkSolve()
+function checkSolve(solution)
 {
 	for(i=0; i<9; i++) // checks solution for correctness
 	{
@@ -641,20 +644,23 @@ function checkSolve()
 		b = Number(solution[i]) + Number(solution[i+9]) + Number(solution[i+18]) + Number(solution[i+27]) + Number(solution[i+36]) + Number(solution[i+45]) + Number(solution[i+54]) + Number(solution[i+63]) + Number(solution[i+72]);
 		if ( a!=45 || b !=45)
 		{
-			sort();
-		}
+			return false;
+			//sort();
+		}else{return true;}
 	}
 }
-function blurred(dest)
+function blurred(x)
 {
-	var x=document.getElementById(dest).value;
-	var y = Number(dest.slice(2,4));
+	//var x=document.getElementById(dest).value;
+	//var y = Number(dest.slice(2,4));
 	
-	if(x<1 || x > 9)
+	if(x<1 || x > 9 || x%1 != 0)
 	{
-		document.getElementById(dest).value = null;
+		//document.getElementById(dest).value = null;
+		return false;
 	}else
 	{
+		return true;
 		entries[y] = x.toString();
 		if (solution[y] == entries[y])
 		{
@@ -780,4 +786,5 @@ function loadedPage()
 	}
 	document.getElementById('totalScore').innerHTML = "Points: " + score;
 }
+
 	

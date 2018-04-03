@@ -1119,7 +1119,7 @@ function loadedPage()
 		localStorage.setItem("score", 200);
 	}else
 	{
-		score = c;
+		score = Number(c);
 	}
 	document.getElementById('totalScore').innerHTML = "Points: " + score;
 }
